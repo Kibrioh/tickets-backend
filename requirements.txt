@@ -6,3 +6,4 @@ itsdangerous
 reportlab
 pillow
 gunicorn
+psycopg[binary]
