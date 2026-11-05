@@ -16,11 +16,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173").rstrip("/")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://tickets-hubs.onrender.com").rstrip("/")
 CORS(app, origins=[origin.strip().rstrip("/") for origin in FRONTEND_URL.split(",") if origin.strip()])
 SECRET = os.getenv("PAYSTACK_SECRET_KEY", "")
 CURRENCY = os.getenv("PAYSTACK_CURRENCY", "KES")
-SITE_URL = os.getenv("SITE_URL", "http://localhost:5173")
+SITE_URL = os.getenv("SITE_URL", "https://tickets-hubs.onrender.com")
 PAYSTACK = "https://api.paystack.co"
 DATA_DIR = os.getenv("DATA_DIR", os.path.dirname(__file__))
 os.makedirs(DATA_DIR, exist_ok=True)
@@ -433,4 +433,4 @@ def admin_upload():
     return jsonify(url=f"/uploads/{name}")
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=False)
