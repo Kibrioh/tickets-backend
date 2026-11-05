@@ -16,13 +16,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app)
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173").rstrip("/")
+CORS(app, origins=[origin.strip().rstrip("/") for origin in FRONTEND_URL.split(",") if origin.strip()])
 SECRET = os.getenv("PAYSTACK_SECRET_KEY", "")
 CURRENCY = os.getenv("PAYSTACK_CURRENCY", "KES")
 SITE_URL = os.getenv("SITE_URL", "http://localhost:5173")
 PAYSTACK = "https://api.paystack.co"
-DB = os.path.join(os.path.dirname(__file__), "tickets.db")
-UPLOADS = os.path.join(os.path.dirname(__file__), "uploads")
+DATA_DIR = os.getenv("DATA_DIR", os.path.dirname(__file__))
+os.makedirs(DATA_DIR, exist_ok=True)
+DB = os.path.join(DATA_DIR, "tickets.db")
+UPLOADS = os.path.join(DATA_DIR, "uploads")
 os.makedirs(UPLOADS, exist_ok=True)
 app.config["MAX_CONTENT_LENGTH"] = 6 * 1024 * 1024
 
